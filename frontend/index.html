@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#17243a">
+    <title>ClothesSpot | AI Support Desk</title>
+    <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="Main navigation">
+            <a class="brand" href="#" data-page-link="overview" aria-label="ClothesSpot support desk home">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 4 4 2 4-2 4 3-2 4-2-1v10H8V10l-2 1-2-4 4-3Z"/><path d="M9 10h6"/></svg>
+                </span>
+                <span class="brand-copy"><span class="brand-name">ClothesSpot</span><span class="brand-caption">AI Support Desk</span></span>
+            </a>
+
+            <div class="nav-label">Workspace</div>
+            <nav class="primary-nav">
+                <button class="nav-link active" type="button" data-page="overview" title="Overview">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Overview</span>
+                </button>
+                <button class="nav-link" type="button" data-page="tickets" title="Tickets">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4V5Z"/><path d="M9 9h6M9 13h4"/></svg><span>Tickets</span><span class="nav-count" id="navTicketCount">0</span>
+                </button>
+                <button class="nav-link" type="button" data-page="agents" title="AI agents">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="16" height="13" rx="4"/><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"/></svg><span>AI Agents</span>
+                </button>
+                <button class="nav-link" type="button" data-page="knowledge" title="Knowledge base">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h6"/></svg><span>Knowledge Base</span>
+                </button>
+                <button class="nav-link" type="button" data-page="analytics" title="Analytics">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 19h17"/><path d="m7 15 4-4 3 2 6-7"/></svg><span>Analytics</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-spacer"></div>
+            <div class="sidebar-note">
+                <div class="sidebar-note-title">Grounded support</div>
+                <div class="sidebar-note-copy">Responses use the local ClothesSpot policy library and flag cases that need a human review.</div>
+            </div>
+            <div class="connection-state" id="connectionState"><span class="connection-dot"></span><span id="connectionLabel">Checking API…</span></div>
+        </aside>
+
+        <div class="main-column">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <div class="page-heading">
+                        <div class="eyebrow">Customer operations</div>
+                        <h1 class="page-title" id="currentPageTitle">Overview</h1>
+                    </div>
+                </div>
+                <div class="topbar-actions">
+                    <label class="global-search" aria-label="Search tickets">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg>
+                        <input id="ticketSearch" type="search" placeholder="Search tickets..." autocomplete="off">
+                    </label>
+                    <button class="icon-button" id="refreshButton" type="button" title="Refresh dashboard" aria-label="Refresh dashboard">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 9A7 7 0 0 1 18 6l2 2M4 16l2 2a7 7 0 0 0 11.9-3"/></svg>
+                    </button>
+                    <button class="button button-primary" id="newTicketButton" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                        <span>New ticket</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="content">
+                <section class="page active" id="page-overview" aria-labelledby="overviewHeading">
+                    <div class="page-intro">
+                        <div><h2 id="overviewHeading">Support overview</h2><p>A live view of customer support activity and automated resolutions.</p></div>
+                        <span class="subtle" id="lastUpdated">Loading latest data…</span>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <article class="metric-card" style="--accent:#526dff;--tint:#edf0ff;--orb:rgb(82 109 255 / 9%)">
+                            <div class="metric-head"><span>Total tickets</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4V5Z"/><path d="M9 9h6M9 13h4"/></svg></span></div>
+                            <div class="metric-value" id="metricTotal">—</div><div class="metric-foot">Recorded support requests</div>
+                        </article>
+                        <article class="metric-card" style="--accent:#20a77a;--tint:#e7f8f1;--orb:rgb(32 201 151 / 10%)">
+                            <div class="metric-head"><span>Resolved</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></span></div>
+                            <div class="metric-value" id="metricResolved">—</div><div class="metric-foot">Resolved without a human handoff</div>
+                        </article>
+                        <article class="metric-card" style="--accent:#d84f61;--tint:#fff0f1;--orb:rgb(216 79 97 / 9%)">
+                            <div class="metric-head"><span>Escalated</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.8 19h18.4L12 3Z"/><path d="M12 9v4M12 16h.01"/></svg></span></div>
+                            <div class="metric-value" id="metricEscalated">—</div><div class="metric-foot">Flagged for support review</div>
+                        </article>
+                        <article class="metric-card" style="--accent:#b17a24;--tint:#fff6e6;--orb:rgb(217 144 39 / 10%)">
+                            <div class="metric-head"><span>Escalation rate</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h17"/><path d="m7 15 4-4 3 2 6-7"/></svg></span></div>
+                            <div class="metric-value" id="metricEscalationRate">—</div><div class="metric-foot">Share requiring human attention</div>
+                        </article>
+                    </div>
+
+                    <div class="grid-two">
+                        <section class="panel">
+                            <div class="panel-head"><div><h3 class="panel-title">Ticket outcomes</h3><p class="panel-subtitle">Resolved and escalated ticket totals</p></div><button class="text-link" type="button" data-page-link="analytics">View analytics</button></div>
+                            <div class="chart-wrap" id="overviewChart" aria-label="Ticket outcome chart"></div>
+                            <div class="chart-legend"><span class="legend-item"><span class="legend-dot" style="--dot:#20c997"></span>Resolved</span><span class="legend-item"><span class="legend-dot" style="--dot:#e57580"></span>Escalated</span></div>
+                        </section>
+                        <section class="panel">
+                            <div class="panel-head"><div><h3 class="panel-title">AI agent workflow</h3><p class="panel-subtitle">A complaint moves through four focused steps</p></div><button class="text-link" type="button" data-page-link="agents">Explore agents</button></div>
+                            <div class="workflow-grid" id="overviewWorkflow"></div>
+                        </section>
+                    </div>
+
+                    <section class="panel table-panel">
+                        <div class="panel-head"><div><h3 class="panel-title">Recent tickets</h3><p class="panel-subtitle">The latest support requests from the ticket log</p></div><button class="text-link" type="button" data-page-link="tickets">View all tickets</button></div>
+                        <div class="table-scroll"><table><thead><tr><th>Ticket</th><th>Customer</th><th>Category</th><th>Priority</th><th>Status</th></tr></thead><tbody id="recentTicketsBody"><tr><td class="empty-row" colspan="5">Loading tickets…</td></tr></tbody></table></div>
+                    </section>
+                </section>
+
+                <section class="page" id="page-tickets" aria-labelledby="ticketsHeading">
+                    <div class="page-intro"><div><h2 id="ticketsHeading">Ticket history</h2><p>Search, review, and download customer support records.</p></div><a class="button button-secondary" id="downloadTickets" href="#" download="tickets.csv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>Download CSV</a></div>
+                    <div class="ticket-toolbar">
+                        <div class="filter-group" role="group" aria-label="Filter tickets by status">
+                            <button class="filter-chip active" type="button" data-status-filter="all">All tickets</button>
+                            <button class="filter-chip" type="button" data-status-filter="Resolved">Resolved</button>
+                            <button class="filter-chip" type="button" data-status-filter="Escalated">Escalated</button>
+                        </div>
+                        <span class="subtle" id="ticketResultCount">0 tickets</span>
+                    </div>
+                    <div class="ticket-layout">
+                        <section class="panel table-panel">
+                            <div class="table-scroll"><table><thead><tr><th>Ticket ID</th><th>Complaint</th><th>Customer</th><th>Category</th><th>Priority</th><th>Status</th></tr></thead><tbody id="ticketsBody"><tr><td class="empty-row" colspan="6">Loading tickets…</td></tr></tbody></table></div>
+                        </section>
+                        <aside class="panel detail-panel" id="ticketDetails" aria-label="Selected ticket details"></aside>
+                    </div>
+                </section>
+
+                <section class="page" id="page-agents" aria-labelledby="agentsHeading">
+                    <div class="page-intro"><div><h2 id="agentsHeading">AI agent workflow</h2><p>Four focused agents classify, retrieve policy, prepare a response, and log the case.</p></div><button class="button button-primary" type="button" id="agentsNewTicket">Run on a complaint</button></div>
+                    <div class="agent-grid" id="agentCards"></div>
+                    <section class="panel agent-workflow">
+                        <div class="panel-head"><div><h3 class="panel-title">Latest execution</h3><p class="panel-subtitle" id="executionSubtitle">Submit a ticket to inspect the returned workflow steps.</p></div></div>
+                        <div class="agent-grid" id="executionSteps"></div>
+                    </section>
+                </section>
+
+                <section class="page" id="page-knowledge" aria-labelledby="knowledgeHeading">
+                    <div class="page-intro"><div><h2 id="knowledgeHeading">Knowledge base</h2><p>Search the policy passages used to ground support responses.</p></div></div>
+                    <div class="kb-cards" id="knowledgeCards"></div>
+                    <form class="kb-toolbar" id="knowledgeSearchForm">
+                        <input class="field" id="knowledgeQuery" type="search" minlength="2" placeholder="Search shipping, refunds, account access…" aria-label="Search knowledge base" required>
+                        <select class="select-field" id="knowledgeCategory" aria-label="Filter by policy category" style="max-width:160px">
+                            <option value="">All categories</option><option>Shipping</option><option>Refund</option><option>Account</option><option>Product</option><option>Billing</option>
+                        </select>
+                        <button class="button button-primary" id="knowledgeSearchButton" type="submit">Search policies</button>
+                    </form>
+                    <section class="panel"><div class="panel-head"><div><h3 class="panel-title">Search results</h3><p class="panel-subtitle" id="knowledgeResultLabel">Enter a search term to find relevant policy passages.</p></div></div><div class="search-results" id="knowledgeResults"></div></section>
+                </section>
+
+                <section class="page" id="page-analytics" aria-labelledby="analyticsHeading">
+                    <div class="page-intro"><div><h2 id="analyticsHeading">Analytics</h2><p>Operational metrics calculated from the support ticket log.</p></div><button class="button button-secondary" type="button" data-refresh>Refresh metrics</button></div>
+                    <div class="metrics-grid">
+                        <article class="metric-card"><div class="metric-head"><span>Total tickets</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></span></div><div class="metric-value" id="analyticsTotal">—</div><div class="metric-foot">All records in the ticket log</div></article>
+                        <article class="metric-card"><div class="metric-head"><span>Resolution rate</span><span class="metric-icon" style="color:#199b72;background:#e7f8f1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 12 4 4L19 6"/></svg></span></div><div class="metric-value" id="analyticsResolutionRate">—</div><div class="metric-foot">Resolved out of all tickets</div></article>
+                        <article class="metric-card"><div class="metric-head"><span>Avg. confidence</span><span class="metric-icon" style="color:#526dff;background:#edf0ff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4 7v5c0 5 4 8 8 9 4-1 8-4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></span></div><div class="metric-value" id="analyticsConfidence">—</div><div class="metric-foot">Mean of stored workflow confidence scores</div></article>
+                        <article class="metric-card"><div class="metric-head"><span>Escalation rate</span><span class="metric-icon" style="color:#c64d5d;background:#fff0f1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 2.8 19h18.4L12 3Z"/><path d="M12 9v4M12 16h.01"/></svg></span></div><div class="metric-value" id="analyticsEscalationRate">—</div><div class="metric-foot">Escalated out of all tickets</div></article>
+                    </div>
+                    <div class="analytics-grid">
+                        <section class="panel"><div class="panel-head"><div><h3 class="panel-title">By category</h3><p class="panel-subtitle">Ticket volume grouped by issue</p></div></div><div class="distribution" id="categoryDistribution"></div></section>
+                        <section class="panel"><div class="panel-head"><div><h3 class="panel-title">By urgency</h3><p class="panel-subtitle">Reported ticket priority distribution</p></div></div><div class="distribution" id="urgencyDistribution"></div></section>
+                        <section class="panel"><div class="panel-head"><div><h3 class="panel-title">By sentiment</h3><p class="panel-subtitle">Customer sentiment classifications</p></div></div><div class="distribution" id="sentimentDistribution"></div></section>
+                    </div>
+                    <section class="panel evaluation-box">
+                        <div class="panel-head"><div><h3 class="panel-title">Workflow benchmarks</h3><p class="panel-subtitle">Run the local deterministic evaluation cases.</p></div><button class="button button-secondary" id="runEvaluation" type="button">Run evaluation</button></div>
+                        <div class="evaluation-results" id="evaluationResults" hidden>Evaluation has not been run.</div>
+                    </section>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <dialog class="dialog" id="ticketDialog" aria-labelledby="dialogTitle">
+        <form id="ticketForm">
+            <div class="dialog-head"><div><h2 id="dialogTitle">Create support ticket</h2><p>Run a customer complaint through the support workflow.</p></div><button class="icon-button" id="closeDialog" type="button" aria-label="Close dialog">✕</button></div>
+            <div class="dialog-body">
+                <div><span class="form-label">Try a sample complaint</span><div class="preset-row" id="presetButtons"></div></div>
+                <div class="form-row">
+                    <label><span class="form-label">Customer name</span><input class="field" id="customerName" name="customer_name" maxlength="120" placeholder="e.g. Alex Rivera"></label>
+                    <label><span class="form-label">Order ID <span class="subtle">(optional)</span></span><input class="field" id="orderId" name="order_id" maxlength="120" placeholder="e.g. ORD-1001"></label>
+                </div>
+                <label><span class="form-label">Complaint or question</span><textarea class="textarea-field" id="complaint" name="complaint" minlength="3" maxlength="4000" placeholder="Describe the customer's issue…" required></textarea><span class="form-foot"><span>Required · 3–4,000 characters</span><span id="complaintLength">0 / 4,000</span></span></label>
+                <p class="subtle" id="formError" role="alert" hidden></p>
+            </div>
+            <div class="dialog-actions"><button class="button button-secondary" id="cancelDialog" type="button">Cancel</button><button class="button button-primary" id="submitTicket" type="submit">Process complaint</button></div>
+        </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="/static/dashboard.js"></script>
+</body>
+</html>
